@@ -15,23 +15,27 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { orders } from "@/migrations/schema";
+import { categories, orders } from "@/server/schema";
 import { db } from "@/server/db";
+import AddProductFrom from "@/components/addProductFrom";
+import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { PlusCircle } from "lucide-react";
 
 export default async function Page() {
-  const allOrders = await db
-    .select({
-      id: orders.id,
-      status: orders.status,
-      orderDate: orders.orderDate,
-      fullName: orders.fullName,
-      phoneNumber: orders.phoneNumber,
-      wilaya: orders.wilaya,
-      baladia: orders.baladia,
-      livraison: orders.livraison,
-    })
-    .from(orders);
-  if (!allOrders) return;
+  const allOrders = await db.select().from(orders);
+
+  const allCategories = await db
+    .select({ id: categories.id, name: categories.name })
+    .from(categories)
+    .orderBy(categories.createdAt);
 
   return (
     <SidebarProvider>
@@ -56,12 +60,31 @@ export default async function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+              <Dialog>
+                <DialogTrigger className="flex items-center flex-col gap-2">
+                  <PlusCircle />
+                  <p>add a product</p>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogDescription>
+                      <AddProductFrom categories={allCategories} />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
             <div className="aspect-video rounded-xl bg-muted/50" />
             <div className="aspect-video rounded-xl bg-muted/50" />
           </div>
           <div className="min-h-[100vh] flex-1 rounded-xl  border md:min-h-min p-10">
-            <DataTable columns={columns} data={allOrders} />
+            {allOrders ? (
+              <DataTable columns={columns} data={allOrders} />
+            ) : (
+              <p>no orders at the moment</p>
+            )}{" "}
           </div>
         </div>
       </SidebarInset>

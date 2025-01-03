@@ -29,8 +29,8 @@ const data = {
         },
 
         {
-          title: "Upgrading",
-          url: "#",
+          title: "Add a product",
+          url: "/dashboard/product",
         },
       ],
     },

@@ -1,24 +1,43 @@
 import {
   pgTable,
+  index,
+  foreignKey,
   text,
   timestamp,
   unique,
-  index,
-  foreignKey,
   integer,
 } from "drizzle-orm/pg-core";
-// import { sql } from "drizzle-orm"
 
-export const orders = pgTable("orders", {
+export const images = pgTable(
+  "images",
+  {
+    id: text().primaryKey().notNull(),
+    productId: text("product_id").notNull(),
+    createdAt: timestamp("created_at", { mode: "string" })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
+    imageUrl: text("image_url").notNull(),
+  },
+  (table) => [
+    index("imageProduct_idx").using(
+      "btree",
+      table.productId.asc().nullsLast().op("text_ops")
+    ),
+    foreignKey({
+      columns: [table.productId],
+      foreignColumns: [products.id],
+      name: "images_product_id_products_id_fk",
+    }).onDelete("cascade"),
+  ]
+);
+
+export const categories = pgTable("categories", {
   id: text().primaryKey().notNull(),
-  status: text().default("pending"),
-  orderDate: timestamp("order_date", { mode: "string" }).defaultNow().notNull(),
-  fullName: text("full_name").notNull(),
-  phoneNumber: text("phone_number").notNull(),
-  wilaya: text().notNull(),
-  baladia: text().notNull(),
+  name: text().notNull(),
+  description: text(),
+  createdAt: timestamp("created_at", { mode: "string" }),
   updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-  livraison: text().default("bereau").notNull(),
 });
 
 export const users = pgTable(
@@ -68,28 +87,18 @@ export const products = pgTable(
   ]
 );
 
-export const images = pgTable(
-  "images",
-  {
-    id: text().primaryKey().notNull(),
-    productId: text("product_id").notNull(),
-    createdAt: timestamp("created_at", { mode: "string" })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-  },
-  (table) => [
-    index("imageProduct_idx").using(
-      "btree",
-      table.productId.asc().nullsLast().op("text_ops")
-    ),
-    foreignKey({
-      columns: [table.productId],
-      foreignColumns: [products.id],
-      name: "images_product_id_products_id_fk",
-    }).onDelete("cascade"),
-  ]
-);
+export const orders = pgTable("orders", {
+  id: text().primaryKey().notNull(),
+  status: text().default("pending"),
+  orderDate: timestamp("order_date", { mode: "string" }).defaultNow().notNull(),
+  fullName: text("full_name").notNull(),
+  phoneNumber: text("phone_number").notNull(),
+  wilaya: text().notNull(),
+  baladia: text().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
+  livraison: text().default("bereau").notNull(),
+  createdAt: timestamp("created_at", { mode: "string" }),
+});
 
 export const productSizes = pgTable(
   "product_sizes",
@@ -146,9 +155,3 @@ export const productsOrdered = pgTable(
     }),
   ]
 );
-
-export const categories = pgTable("categories", {
-  id: text().primaryKey().notNull(),
-  name: text().notNull(),
-  description: text(),
-});

@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 // import { InferSelectModel } from "drizzle-orm";
-import { orders } from "@/migrations/schema";
+import { orders } from "@/server/schema";
 import { Checkbox } from "../ui/checkbox";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -61,7 +61,7 @@ export const columns: ColumnDef<OrdersType>[] = [
   { accessorKey: "phoneNumber", header: "Phone Number" },
   { accessorKey: "wilaya", header: "Wilaya" },
   { accessorKey: "baladia", header: "baladia" },
-  { accessorKey: "status", header: "Status" },
+  { accessorKey: "status", header: "Status", filterFn: "includesString" },
   { accessorKey: "livraison", header: "Livraison" },
   {
     id: "actions",

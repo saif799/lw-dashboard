@@ -15,7 +15,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { categories, orders } from "@/server/schema";
+import {  orders } from "@/server/schema";
 import { db } from "@/server/db";
 import AddProductFrom from "@/components/addProductFrom";
 import React from "react";
@@ -32,11 +32,7 @@ import { PlusCircle } from "lucide-react";
 export default async function Page() {
   const allOrders = await db.select().from(orders);
 
-  const allCategories = await db
-    .select({ id: categories.id, name: categories.name })
-    .from(categories)
-    .orderBy(categories.createdAt);
-
+ 
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -60,7 +56,7 @@ export default async function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+            <div className="aspect-video rounded-xl  flex items-center justify-center  border">
               <Dialog>
                 <DialogTrigger className="flex items-center flex-col gap-2">
                   <PlusCircle />
@@ -70,7 +66,7 @@ export default async function Page() {
                   <DialogHeader>
                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                     <DialogDescription>
-                      <AddProductFrom categories={allCategories} />
+                      <AddProductFrom  />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>

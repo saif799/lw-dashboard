@@ -12,9 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 // import { InferSelectModel } from "drizzle-orm";
 import { orders } from "@/server/schema";
 import { Checkbox } from "../ui/checkbox";
+import { OrderActions } from "./OrderActions";
+import { changeOrderStatusAction } from "@/actions/changeOrderStatus.action";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -29,6 +32,7 @@ export type Payment = {
 export const columns: ColumnDef<OrdersType>[] = [
   {
     id: "select",
+
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -85,8 +89,25 @@ export const columns: ColumnDef<OrdersType>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>
+              <OrderActions />
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <form
+                action={async () => {
+                  const status =
+                    row.original.status === "pending" ? "confirmed" : "pending";
+                  await changeOrderStatusAction(row.original.id, status);
+                }}
+              >
+                <button type="submit">
+                  {" "}
+                  {row.original.status === "pending"
+                    ? "Confirm"
+                    : "set as Pending"}{" "}
+                </button>
+              </form>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

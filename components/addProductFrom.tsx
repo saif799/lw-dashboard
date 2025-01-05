@@ -30,11 +30,7 @@ import { z } from "zod";
 import { addProductAction } from "@/actions/addProduct.action";
 import { useState } from "react";
 
-export default function AddProductFrom({
-  categories,
-}: {
-  categories: Array<{ name: string; id: string }>;
-}) {
+export default function AddProductFrom() {
   const [size, setSize] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -95,7 +91,7 @@ export default function AddProductFrom({
         </div>
 
         <div className="flex gap-5">
-          <FormField
+          {/* <FormField
             control={form.control}
             name="categoryId"
             render={({ field }) => (
@@ -119,7 +115,7 @@ export default function AddProductFrom({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <FormField
             control={form.control}
             name="showCase"
@@ -132,7 +128,7 @@ export default function AddProductFrom({
                     // TODO : yeah i aint styling this check this url to know how to style https://docs.uploadthing.com/concepts/theming#theming-with-tailwind-css
                     appearance={{
                       button:
-                        "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed text-black  text-black border bg-none after:bg-orange-400 rounded-full p-1 hover:cursor-pointer w-full",
+                        "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed ut-uploading:bg-muted/50 text-black  text-black border bg-none after:bg-orange-400 rounded-full p-1 hover:cursor-pointer w-full",
                       container: "w-full border-cyan-300 rounded-full",
                       allowedContent: "hidden",
                     }}

@@ -27,6 +27,7 @@ export async function addProductAction(data: z.infer<typeof formSchema>) {
     await db
       .insert(products)
       .values({
+        modelId:"",
         id: productId,
         ...productData,
         price: parseFloat(data.price),

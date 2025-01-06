@@ -70,7 +70,7 @@ export default async function Page() {
                   <DialogHeader>
                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                     <DialogDescription>
-                      <AddProductFrom categories={allModels} />
+                      <AddProductFrom models={allModels} />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>

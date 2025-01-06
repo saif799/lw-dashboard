@@ -30,7 +30,12 @@ import { z } from "zod";
 import { addProductAction } from "@/actions/addProduct.action";
 import { useState } from "react";
 
-export default function AddProductFrom() {
+type ProductModel = {
+  id: string;
+  name: string;
+}
+
+export default function AddProductFrom({ models }: { models: ProductModel[] }) { 
   const [size, setSize] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -93,7 +98,7 @@ export default function AddProductFrom() {
         <div className="flex gap-5">
           {/* <FormField
             control={form.control}
-            name="categoryId"
+            name="modelId"
             render={({ field }) => (
               <FormItem className="grow">
                 <FormLabel>category</FormLabel>

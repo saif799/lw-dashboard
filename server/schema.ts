@@ -3,34 +3,11 @@ import {
   index,
   foreignKey,
   text,
+  integer,
   timestamp,
   unique,
-  integer,
 } from "drizzle-orm/pg-core";
 
-export const images = pgTable(
-  "images",
-  {
-    id: text().primaryKey().notNull(),
-    productId: text("product_id").notNull(),
-    createdAt: timestamp("created_at", { mode: "string" })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-    imageUrl: text("image_url").notNull(),
-  },
-  (table) => [
-    index("imageProduct_idx").using(
-      "btree",
-      table.productId.asc().nullsLast().op("text_ops")
-    ),
-    foreignKey({
-      columns: [table.productId],
-      foreignColumns: [products.id],
-      name: "images_product_id_products_id_fk",
-    }).onDelete("cascade"),
-  ]
-);
 
 export const users = pgTable(
   "users",
@@ -96,9 +73,31 @@ export const orders = pgTable("orders", {
   wilaya: text().notNull(),
   baladia: text().notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-  livraison: text().default("bereau").notNull(),
-  createdAt: timestamp("created_at", { mode: "string" }),
+  livraison: text().default("bureau"),
 });
+
+export const images = pgTable(
+  "images",
+  {
+    id: text().primaryKey().notNull(),
+    productId: text("product_id").notNull(),
+    createdAt: timestamp("created_at", { mode: "string" })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
+  },
+  (table) => [
+    index("imageProduct_idx").using(
+      "btree",
+      table.productId.asc().nullsLast().op("text_ops")
+    ),
+    foreignKey({
+      columns: [table.productId],
+      foreignColumns: [products.id],
+      name: "images_product_id_products_id_fk",
+    }).onDelete("cascade"),
+  ]
+);
 
 export const productSizes = pgTable(
   "product_sizes",

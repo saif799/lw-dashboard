@@ -5,7 +5,6 @@ export const formSchema = z.object({
   description: z.string().optional(),
   showCase: z.string(),
   price: z.string(),
-  categoryId: z.string(),
   sizes: z
     .array(
       z.object({

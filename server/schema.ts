@@ -8,32 +8,6 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-export const products = pgTable(
-  "products",
-  {
-    id: text().primaryKey().notNull(),
-    name: text().notNull(),
-    description: text(),
-    showCase: text("show_case").notNull(),
-    price: integer().notNull(),
-    createdAt: timestamp("created_at", { mode: "string" })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-    modelId: text("model_id").notNull(),
-  },
-  (table) => [
-    index("ProductName_idx").using(
-      "btree",
-      table.name.asc().nullsLast().op("text_ops")
-    ),
-    foreignKey({
-      columns: [table.modelId],
-      foreignColumns: [shoeModels.id],
-      name: "products_model_id_shoe_models_id_fk",
-    }),
-  ]
-);
 
 export const users = pgTable(
   "users",
@@ -55,13 +29,40 @@ export const users = pgTable(
   ]
 );
 
+export const products = pgTable(
+  "products",
+  {
+    id: text().primaryKey().notNull(),
+    name: text().notNull(),
+    description: text(),
+    showCase: text("show_case").notNull(),
+    price: integer().notNull(),
+    createdAt: timestamp("created_at", { mode: "string" })
+      .defaultNow()
+      .notNull(),
+    modelId: text("model_id").notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
+  },
+  (table) => [
+    index("ProductName_idx").using(
+      "btree",
+      table.name.asc().nullsLast().op("text_ops")
+    ),
+    foreignKey({
+      columns: [table.modelId],
+      foreignColumns: [shoeModels.id],
+      name: "products_category_id_categories_id_fk",
+    }).onDelete("cascade"),
+  ]
+);
+
 export const shoeModels = pgTable("shoe_models", {
-  id: text().primaryKey().notNull(),
-  modelName: text("model_name").notNull(),
-  brand: text().notNull(),
-  mobileImage: text("mobile_image").notNull(),
-  desktopImage: text("desktop_image").notNull(),
-});
+	id: text("id").primaryKey().notNull(),
+	modelName : text("model_name").notNull(),
+	brand : text("brand").notNull(),
+	mobileImage : text("mobile_image"),
+	desktopImage : text("desktop_image"),
+  });
 
 export const orders = pgTable("orders", {
   id: text().primaryKey().notNull(),

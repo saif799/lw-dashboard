@@ -8,7 +8,6 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-
 export const users = pgTable(
   "users",
   {
@@ -57,12 +56,12 @@ export const products = pgTable(
 );
 
 export const shoeModels = pgTable("shoe_models", {
-	id: text("id").primaryKey().notNull(),
-	modelName : text("model_name").notNull(),
-	brand : text("brand").notNull(),
-	mobileImage : text("mobile_image"),
-	desktopImage : text("desktop_image"),
-  });
+  id: text("id").primaryKey().notNull(),
+  modelName: text("model_name").notNull(),
+  brand: text("brand").notNull(),
+  mobileImage: text("mobile_image").notNull(),
+  desktopImage: text("desktop_image").notNull(),
+});
 
 export const orders = pgTable("orders", {
   id: text().primaryKey().notNull(),

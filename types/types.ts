@@ -4,7 +4,7 @@ export const formSchema = z.object({
   name: z.string().nonempty({ message: "please fill the product name" }),
   description: z.string().optional(),
   showCase: z.string(),
-  model: z.string().optional(),
+  model: z.string().nonempty(),
   price: z.string(),
   sizes: z
     .array(

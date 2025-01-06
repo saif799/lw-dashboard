@@ -21,9 +21,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../components/ui/select";
 import { UploadButton } from "@/utils/uploadthing";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../components/ui/textarea";
 import { generateId } from "@/lib/generateId";
 import { formSchema } from "@/types/types";
 import { z } from "zod";
@@ -48,15 +48,14 @@ export default function AddProductFrom({
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      console.log(data);
+      console.log("this is the model id", data.model);
 
       await addProductAction(data);
 
-      alert("product added successfully ");
+      toast.success("product added successfully");
     } catch (err) {
       console.error("Post request failed while creating the order:", err);
-      toast.error("Order failed");
-      alert("product fialed ");
+      toast.error("failed to add your product");
     } finally {
     }
   }
@@ -109,8 +108,14 @@ export default function AddProductFrom({
                     </SelectTrigger>
                     <SelectContent>
                       {models.map((model) => (
-                        <SelectItem key={model.id} value={model.id}>
-                          {model.modelName}
+                        <SelectItem
+                          key={model.id}
+                          value={model.id}
+                          onClick={() => {
+                            console.log(model.id, field.value);
+                          }}
+                        >
+                          {model.modelName} {model.id}
                         </SelectItem>
                       ))}
                     </SelectContent>

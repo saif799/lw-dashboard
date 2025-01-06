@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { orders, shoeModels } from "@/server/schema";
 import { db } from "@/server/db";
-import AddProductFrom from "@/components/addProductFrom";
+import AddProductFrom from "@/server/addProductFrom";
 import React from "react";
 import {
   Dialog,

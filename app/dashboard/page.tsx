@@ -15,7 +15,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { categories, orders } from "@/server/schema";
+import { orders, shoeModels } from "@/server/schema";
 import { db } from "@/server/db";
 import AddProductFrom from "@/components/addProductFrom";
 import React from "react";
@@ -32,10 +32,10 @@ import { PlusCircle } from "lucide-react";
 export default async function Page() {
   const allOrders = await db.select().from(orders);
 
-  const allCategories = await db
-    .select({ id: categories.id, name: categories.name })
-    .from(categories)
-    .orderBy(categories.createdAt);
+  const allModels = await db
+    .select({ id: shoeModels.id, name: shoeModels.modelName })
+    .from(shoeModels)
+    .orderBy(shoeModels.modelName);
 
   return (
     <SidebarProvider>
@@ -70,7 +70,7 @@ export default async function Page() {
                   <DialogHeader>
                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                     <DialogDescription>
-                      <AddProductFrom categories={allCategories} />
+                      <AddProductFrom categories={allModels} />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>

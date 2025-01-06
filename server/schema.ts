@@ -32,14 +32,6 @@ export const images = pgTable(
   ]
 );
 
-export const categories = pgTable("categories", {
-  id: text().primaryKey().notNull(),
-  name: text().notNull(),
-  description: text(),
-  createdAt: timestamp("created_at", { mode: "string" }),
-  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-});
-
 export const users = pgTable(
   "users",
   {
@@ -71,7 +63,7 @@ export const products = pgTable(
     createdAt: timestamp("created_at", { mode: "string" })
       .defaultNow()
       .notNull(),
-    categoryId: text("category_id").notNull(),
+    modelId: text("model_id").notNull(),
     updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
   },
   (table) => [
@@ -80,12 +72,20 @@ export const products = pgTable(
       table.name.asc().nullsLast().op("text_ops")
     ),
     foreignKey({
-      columns: [table.categoryId],
-      foreignColumns: [categories.id],
+      columns: [table.modelId],
+      foreignColumns: [shoeModels.id],
       name: "products_category_id_categories_id_fk",
     }).onDelete("cascade"),
   ]
 );
+
+export const shoeModels = pgTable("shoe_models", {
+	id: text("id").primaryKey().notNull(),
+	modelName : text("model_name").notNull(),
+	brand : text("brand").notNull(),
+	mobileImage : text("mobile_image"),
+	desktopImage : text("desktop_image"),
+  });
 
 export const orders = pgTable("orders", {
   id: text().primaryKey().notNull(),

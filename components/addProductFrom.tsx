@@ -30,7 +30,11 @@ import { z } from "zod";
 import { addProductAction } from "@/actions/addProduct.action";
 import { useState } from "react";
 
-export default function AddProductFrom() {
+export default function AddProductFrom({
+  models,
+}: {
+  models: Array<{ modelName: string; id: string }>;
+}) {
   const [size, setSize] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -91,22 +95,22 @@ export default function AddProductFrom() {
         </div>
 
         <div className="flex gap-5">
-          {/* <FormField
+          <FormField
             control={form.control}
-            name="categoryId"
+            name="model"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>category</FormLabel>
+                <FormLabel>model</FormLabel>
 
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="category" />
+                      <SelectValue placeholder="model" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                      {models.map((model) => (
+                        <SelectItem key={model.id} value={model.id}>
+                          {model.modelName}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -115,7 +119,7 @@ export default function AddProductFrom() {
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
           <FormField
             control={form.control}
             name="showCase"

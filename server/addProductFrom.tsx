@@ -115,7 +115,7 @@ export default function AddProductFrom({
                             console.log(model.id, field.value);
                           }}
                         >
-                          {model.modelName} {model.id}
+                          {model.modelName}
                         </SelectItem>
                       ))}
                     </SelectContent>

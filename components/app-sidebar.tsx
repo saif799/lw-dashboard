@@ -20,17 +20,17 @@ const data = {
   navMain: [
     {
       title: "Building Your Application",
-      url: "#",
+      url: "/dashboard",
       items: [
         {
           title: "Data Fetching",
-          url: "#",
+          url: "/dashboard",
           isActive: true,
         },
 
         {
           title: "Add a product",
-          url: "/dashboard/product",
+          url: "/dashboard/products",
         },
       ],
     },

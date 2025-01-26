@@ -20,6 +20,6 @@ export const formSchema = z.object({
 export const ModelformSchema = z.object({
   modelName: z.string().nonempty({ message: "please fill the product name" }),
   brand: z.string().nonempty({ message: "please fill the brand field" }),
-  MobileImage: z.string().nonempty(),
-  desktopImage: z.string().nonempty(),
+  MobileImage: z.string(),
+  desktopImage: z.string(),
 });

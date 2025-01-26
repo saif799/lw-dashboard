@@ -12,8 +12,8 @@ export const shoeModels = pgTable("shoe_models", {
   id: text().primaryKey().notNull(),
   modelName: text("model_name").notNull(),
   brand: text().notNull(),
-  mobileImage: text("mobile_image").notNull(),
-  desktopImage: text("desktop_image").notNull(),
+  mobileImage: text("mobile_image"),
+  desktopImage: text("desktop_image"),
 });
 
 export const products = pgTable(

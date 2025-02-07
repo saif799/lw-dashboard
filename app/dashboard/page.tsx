@@ -18,7 +18,7 @@ import AddModelFrom from "@/components/addModelForm";
 
 export default async function Page() {
   const allOrders = await db.select().from(orders);
-  const allModels = await db.select().from(shoeModels);
+  const allModels = await db.select().from(shoeModels).limit(100);
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">

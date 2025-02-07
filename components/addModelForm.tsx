@@ -23,6 +23,8 @@ import { addModelAction } from "@/actions/addModel.action";
 import { Loader2 } from "lucide-react";
 
 export default function AddModelFrom() {
+
+  
   const [MIUploading, setMIUploading] = useState(false);
   const [DIUploading, setDIUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

@@ -36,6 +36,9 @@ export default function AddProductFrom({
   models: Array<{ modelName: string; id: string }>;
 }) {
   const [size, setSize] = useState<number>(0);
+  const [linkStr, setLinkStr] = useState<string>();
+  const [isLink, setIsLink] = useState<boolean>(false);
+
   const [stock, setStock] = useState<number>(0);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -130,31 +133,48 @@ export default function AddProductFrom({
             name="showCase"
             render={({}) => (
               <FormItem className="rounded-full hover:cursor-pointer grow">
-                <FormLabel>show case image</FormLabel>
+                <div className="flex justify-between">
+                  <FormLabel>show case image</FormLabel>
+                  <p
+                    onClick={() => {
+                      setIsLink(!isLink);
+                    }}
+                  >
+                    switch to {isLink ? "pasting" : "uploading"}
+                  </p>
+                </div>
 
                 <FormControl>
-                  <UploadButton
-                    // TODO : yeah i aint styling this check this url to know how to style https://docs.uploadthing.com/concepts/theming#theming-with-tailwind-css
-                    appearance={{
-                      button:
-                        "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed ut-uploading:bg-muted/50 text-black  text-black border bg-none after:bg-orange-400 rounded-full p-1 hover:cursor-pointer w-full",
-                      container: "w-full border-cyan-300 rounded-full",
-                      allowedContent: "hidden",
-                    }}
-                    endpoint="imageUploader"
-                    content={{ button: "Pick an Image" }}
-                    onClientUploadComplete={(res) => {
-                      setValue("showCase", res[0].url);
-                      toast.success("image uploaded successfully");
-                    }}
-                    onUploadError={(error: Error) => {
-                      toast.error("image failed to upload try again");
-                      console.log(error.cause);
-                      console.log(error.name);
+                  {isLink ? (
+                    <UploadButton
+                      // TODO : yeah i aint styling this check this url to know how to style https://docs.uploadthing.com/concepts/theming#theming-with-tailwind-css
+                      appearance={{
+                        button:
+                          "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed ut-uploading:bg-muted/50 text-black  text-black border bg-none after:bg-orange-400 rounded-full p-1 hover:cursor-pointer w-full",
+                        container: "w-full border-cyan-300 rounded-full",
+                        allowedContent: "hidden",
+                      }}
+                      endpoint="imageUploader"
+                      content={{ button: "Pick an Image" }}
+                      onClientUploadComplete={(res) => {
+                        setValue("showCase", res[0].url);
+                        toast.success("image uploaded successfully");
+                      }}
+                      onUploadError={(error: Error) => {
+                        toast.error("image failed to upload try again");
+                        console.log(error.cause);
+                        console.log(error.name);
 
-                      alert(`ERROR! ${error.message}`);
-                    }}
-                  />
+                        alert(`ERROR! ${error.message}`);
+                      }}
+                    />
+                  ) : (
+                    <Input
+                      type="text"
+                      placeholder="paste image URL"
+                      onChange={(e) => setValue("showCase", e.target.value)}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -186,31 +206,83 @@ export default function AddProductFrom({
                 </FormLabel>
 
                 <FormControl>
-                  <UploadButton
-                    // TODO : yeah i aint styling this check this url to know how to style https://docs.uploadthing.com/concepts/theming#theming-with-tailwind-css
-                    appearance={{
-                      button:
-                        "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed  text-black border bg-none after:bg-orange-400 rounded-full p-1 hover:cursor-pointer w-full",
-                      container: "w-full border-cyan-300 rounded-full",
-                      allowedContent: "hidden",
-                    }}
-                    endpoint="imagesUploader"
-                    content={{ button: "Pick an Image" }}
-                    onClientUploadComplete={(res) => {
-                      const images = res.map((ima) => ima.url);
+                  {!isLink ? (
+                    <>
+                      {" "}
+                      <div className="space-y-2">
+                        {field.value ? (
+                          field.value.map((item, index) => (
+                            <div key={index} className="flex space-x-2">
+                              <Input
+                                placeholder="Image Url"
+                                type="text"
+                                value={item}
+                                onChange={(e) => {
+                                  const newValue = [...field.value];
+                                  newValue[index] = e.target.value;
 
-                      setValue("images", images);
+                                  field.onChange(newValue);
+                                }}
+                              />
+                            </div>
+                          ))
+                        ) : (
+                          <p>No links yet</p>
+                        )}
 
-                      toast.success("image uploaded successfully");
-                    }}
-                    onUploadError={(error: Error) => {
-                      toast.error(
-                        "failed to upload product images please try again"
-                      );
+                        <div className="flex space-x-2">
+                          <Input
+                            placeholder="link"
+                            type="text"
+                            value={linkStr}
+                            onChange={(e) => {
+                              setLinkStr(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => {
+                            if (linkStr?.length) {
+                              const fieldarray = field.value ?? [];
+                              field.onChange([...fieldarray, linkStr]);
+                              setLinkStr("");
+                            }
+                          }}
+                        >
+                          Add Link
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <UploadButton
+                      // TODO : yeah i aint styling this check this url to know how to style https://docs.uploadthing.com/concepts/theming#theming-with-tailwind-css
+                      appearance={{
+                        button:
+                          "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed  text-black border bg-none after:bg-orange-400 rounded-full p-1 hover:cursor-pointer w-full",
+                        container: "w-full border-cyan-300 rounded-full",
+                        allowedContent: "hidden",
+                      }}
+                      endpoint="imagesUploader"
+                      content={{ button: "Pick an Image" }}
+                      onClientUploadComplete={(res) => {
+                        const images = res.map((ima) => ima.url);
 
-                      alert(`ERROR! ${error.message}`);
-                    }}
-                  />
+                        setValue("images", images);
+
+                        toast.success("image uploaded successfully");
+                      }}
+                      onUploadError={(error: Error) => {
+                        toast.error(
+                          "failed to upload product images please try again"
+                        );
+
+                        alert(`ERROR! ${error.message}`);
+                      }}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>

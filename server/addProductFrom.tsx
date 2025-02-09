@@ -135,13 +135,6 @@ export default function AddProductFrom({
               <FormItem className="rounded-full hover:cursor-pointer grow">
                 <div className="flex justify-between">
                   <FormLabel>show case image</FormLabel>
-                  <p
-                    onClick={() => {
-                      setIsLink(!isLink);
-                    }}
-                  >
-                    switch to {isLink ? "pasting" : "uploading"}
-                  </p>
                 </div>
 
                 <FormControl>
@@ -369,6 +362,16 @@ export default function AddProductFrom({
 
         <Button className="w-full" type="submit">
           Submit
+        </Button>
+        <Button
+          type="button"
+          className="w-full"
+          variant="outline"
+          onClick={() => {
+            setIsLink(!isLink);
+          }}
+        >
+          switch to {isLink ? "pasting URLs" : "uploading Images"}
         </Button>
       </form>
     </Form>

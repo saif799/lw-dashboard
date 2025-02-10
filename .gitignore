@@ -9,6 +9,12 @@
 # testing
 /coverage
 
+#data 
+models.json
+
+#log
+debug.log
+
 # next.js
 /.next/
 /out/

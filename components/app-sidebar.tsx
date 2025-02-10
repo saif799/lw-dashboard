@@ -23,14 +23,14 @@ const data = {
       url: "/dashboard",
       items: [
         {
-          title: "Data Fetching",
+          title: "show case",
           url: "/dashboard",
           isActive: true,
         },
 
         {
-          title: "Add a product",
-          url: "/dashboard/products",
+          title: "models",
+          url: "/dashboard/models",
         },
       ],
     },
